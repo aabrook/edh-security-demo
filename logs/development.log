@@ -1,0 +1,9 @@
+yarn run v0.16.0
+$ nodemon src/bin/server.js 
+[33m[nodemon] 1.11.0[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `babel-node src/bin/server.js`[39m
+  12:27:16:142 DEBUG startup Creating server... (/Users/aaron.abrook/OneDrive/pci-talk/demo/src/lib/createServer.js:63)
+  12:27:16:209 DEBUG startup Server created, ready to listen (/Users/aaron.abrook/OneDrive/pci-talk/demo/src/lib/createServer.js:100)
+  12:27:16:233 DEBUG Server listening on 1338 in development mode (/Users/aaron.abrook/OneDrive/pci-talk/demo/src/bin/server.js:22)
