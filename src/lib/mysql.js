@@ -1,14 +1,12 @@
-import mysql from 'mysql-pro'
-
-const { assign } = Object
+import Mysql from 'mysql-pro'
 
 export const openConnection = () => {
-  return new mysql({
+  return new Mysql({
     mysql: {
-      host     : 'mysql.docker',
-      user     : 'root',
-      password : '',
-      database : 'demo_db',
+      host: 'mysql.docker',
+      user: 'root',
+      password: '',
+      database: 'demo_db',
       multipleStatements: true // because I want to setup from nothing with a single script
     }
   })

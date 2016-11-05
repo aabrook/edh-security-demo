@@ -1,12 +1,9 @@
-import env from '../lib/env'
 import { makeInvoker } from 'awilix-koa'
 import { openConnection } from '../lib/mysql'
 import { debug, getParams } from '../lib/helpers'
 
-const { assign } = Object
-
 const postsApi = ({ someService }) => {
-  const getPosts = async ({ req: { _parsedUrl: { query }}, ok }) => {
+  const getPosts = async ({ req: { _parsedUrl: { query } }, ok }) => {
     const params = getParams(query)
 
     const qry = `SELECT * from posts where user_id = "${params['user_id']}"`
@@ -15,7 +12,7 @@ const postsApi = ({ someService }) => {
     ok({ rows })
   }
 
-  const getPost = async ({ req: { _parsedUrl: { query }}, ok }) => {
+  const getPost = async ({ req: { _parsedUrl: { query } }, ok }) => {
     const params = getParams(query)
 
     const qry = `SELECT * from posts where id = "${params['id']}"`
@@ -23,7 +20,7 @@ const postsApi = ({ someService }) => {
     ok({ rows })
   }
 
-  const postPost = async ({ req: { _parsedUrl: { query }}, ok }) => {
+  const postPost = async ({ req: { _parsedUrl: { query } }, ok }) => {
     const params = getParams(query)
 
     const client = openConnection()
