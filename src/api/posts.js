@@ -19,10 +19,6 @@ const postsApi = ({ someService }) => {
   const listPosts = async (ctx) => {
     const qry = `SELECT * from posts where user_id = "${ctx.request.query['user_id']}"`
     const result = await openConnection().query(qry)
-    if (!result.title) {
-      ctx.response.body = ({ message: 'Error obtaining post', result })
-      return
-    }
 
     ctx.response.body = ReactDOMServer.renderToString(<List children={result} />)
   }
@@ -36,22 +32,35 @@ const postsApi = ({ someService }) => {
   const showPost = async (ctx) => {
     const qry = `SELECT * from posts where id = "${ctx.request.query['id']}"`
     const rows = await openConnection().query(qry)
-    ctx.response.body = ReactDOMServer.renderToString(<Post {...rows[0]} />)
+    ctx.response.body = ReactDOMServer.renderToString(<Post form={!rows.length} {...rows[0]} />)
   }
 
   const postPost = async ({ request: { query }, ok }) => {
+    const result = savePost(query)
+    return ok({ result })
+  }
+
+  const createPost = async (ctx) => {
+    const result = await savePost(ctx.request.body)
+    console.log(result)
+    ctx.response.redirect(`/post?id=${result.insertId}`)
+  }
+
+  const savePost = async (query) => {
     const client = openConnection()
-    const qry = `insert into posts (user_id, post, title) values("${query['user_id']}", "${query['post']}", "${query['title']}")`
+    const qry = `insert into posts (user_id, post, title) values("${query['user_id'] || 1}", "${query['post']}", "${query['title']}")`
+    console.log(qry)
     await client.startTransaction()
     const result = await client.executeTransaction(qry)
     await client.stopTransaction()
 
-    return ok({ result })
+    return result
   }
 
   return {
     getPosts,
     getPost,
+    createPost,
     listPosts,
     postPost,
     showPost
@@ -63,6 +72,7 @@ export default function (router) {
   router
     .get('/posts', api('listPosts'))
     .get('/post', api('showPost'))
+    .post('/post', api('createPost'))
     .get('/api/posts', api('getPosts'))
     .get('/api/post', api('getPost'))
     .post('/api/post', api('postPost'))
