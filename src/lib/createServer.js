@@ -11,6 +11,8 @@ import logger from './logger'
 import getConfiguredContainer from './configureContainer'
 import notFoundHandler from '../middleware/notFound'
 
+import views from 'koa-views'
+
 /**
  * Creates and returns a new Koa application.
  * Does *NOT* call `listen`!

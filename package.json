@@ -23,6 +23,7 @@
   "dependencies": {
     "awilix": "^2.2.1",
     "awilix-koa": "^0.1.0",
+    "babel-preset-react": "^6.16.0",
     "babel-preset-stage-1": "^6.13.0",
     "babel-register": "^6.11.6",
     "bristol": "^0.3.3",
@@ -33,11 +34,14 @@
     "koa-convert": "^1.2.0",
     "koa-respond": "^1.0.0",
     "koa-router": "^7.0.1",
+    "koa-views": "next",
     "lodash": "^4.15.0",
     "mysql": "^2.12.0",
     "mysql-pro": "^1.0.1",
     "palin": "^2.0.1",
     "ramda": "^0.22.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
     "source-map-support": "^0.4.2",
     "yenv": "^1.0.6"
   },
