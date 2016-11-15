@@ -7,16 +7,17 @@ import { openConnection } from '../lib/mysql'
 import List from '../views/components/UserList'
 import PostList from '../views/components/PostList'
 import User from '../views/components/User'
+import App from '../views/components/App'
 
 const userApi = ({ someService }) => {
   const createUser = async (ctx) => {
-    ctx.response.body = ReactDOMServer.renderToString(<User form={true} action="/user" />)
+    ctx.response.body = ReactDOMServer.renderToString(<App><User form={true} action="/user" /></App>)
   }
 
   const listUsers = async (ctx) => {
     const client = openConnection()
     const result = await client.query('select * from users')
-    ctx.response.body = ReactDOMServer.renderToString(<List children={result} />)
+    ctx.response.body = ReactDOMServer.renderToString(<App><List children={result} /></App>)
   }
 
   const getUser = async ({ request: { query }, ok }) => {
@@ -31,10 +32,12 @@ const userApi = ({ someService }) => {
     const posts = await openConnection().query(`select * from posts where user_id = ${rows[0].id}`)
 
     const toDraw = (
-      <div>
-        <User form={!rows.length} {...rows[0]} />
-        <PostList children={posts} />
-      </div>
+      <App>
+        <div>
+          <User form={!rows.length} {...rows[0]} />
+          <PostList children={posts} />
+        </div>
+      </App>
     )
     ctx.response.body = ReactDOMServer.renderToString(toDraw)
   }

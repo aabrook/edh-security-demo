@@ -1,12 +1,14 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
-import User from '../views/components/User'
 import { makeInvoker } from 'awilix-koa'
 import { openConnection } from '../lib/mysql'
 
+import User from '../views/components/User'
+import App from '../views/components/App'
+
 const authApi = ({ someService }) => {
   const showLogin = async (ctx) => {
-    ctx.response.body = ReactDOMServer.renderToString(<User form={true} action="/auth" />)
+    ctx.response.body = ReactDOMServer.renderToString(<App><User form={true} action="/auth" /></App>)
   }
 
   const login = async (ctx) => {
