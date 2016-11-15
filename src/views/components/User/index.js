@@ -7,8 +7,8 @@ const view = ({ id, username, email }) => (
   </div>
 )
 
-const form = ({ id, username, email, password, target }) => (
-  <form method="post">
+const form = ({ id, username, email, password, action }) => (
+  <form method="post" action={action}>
     <p><label for='username'>Username</label><input type="text" name="username" id="username" value={username} /></p>
     <p><label for='password'>Password</label><input type="password" name="password" id="password" value={password} /></p>
     <p><label for='email'>Email</label><input type="text" name="email" id="email" value={email} /></p>

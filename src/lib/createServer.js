@@ -6,6 +6,7 @@ import cors from 'kcors'
 import respond from 'koa-respond'
 import createApis from './createApis'
 import bodyParser from 'koa-bodyparser'
+import session from "koa-session2"
 
 import logger from './logger'
 import getConfiguredContainer from './configureContainer'
@@ -28,6 +29,7 @@ export default async function createServer () {
   app.use(respond())
   app.use(convert(cors()))
   app.use(bodyParser())
+  app.use(session())
 
   // Container is configured with our services and whatnot.
   const container = getConfiguredContainer()

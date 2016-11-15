@@ -8,6 +8,9 @@ import List from '../views/components/UserList'
 import User from '../views/components/User'
 
 const userApi = ({ someService }) => {
+  const createUser = async (ctx) => {
+    ctx.response.body = ReactDOMServer.renderToString(<User form={true} action="/user" />)
+  }
 
   const listUsers = async (ctx) => {
     const client = openConnection()
@@ -24,6 +27,12 @@ const userApi = ({ someService }) => {
   const showUser = async (ctx) => {
     const qry = `SELECT * from users where id = "${ctx.request.query['id']}"`
     const rows = await openConnection().query(qry)
+    const toDraw = (
+      <div>
+        <User form={!rows.length} {...rows[0]} />
+        <PostList
+      </div>
+    )
     ctx.response.body = ReactDOMServer.renderToString(<User form={!rows.length} {...rows[0]} />)
   }
 
@@ -34,12 +43,26 @@ const userApi = ({ someService }) => {
 
   const postUser = async (ctx) => {
     console.log(ctx.request.body)
-    const result = await saveUser(ctx.request.body)
-    ctx.response.redirect(`/user?id=${result.insertId}`)
+    try{
+      const result = await saveUser(ctx.request.body)
+      ctx.response.redirect(`/user?id=${result.insertId}`)
+    }catch(e){
+      ctx.response.body = `Looks like bad things happened: ${e.message}`
+    }
   }
 
   const saveUser = async (query) => {
     const client = openConnection()
+    const haveUser = `select * from users where username = "${query['username']}" or email = "${query['email']}"`
+    await client.startTransaction()
+    const userExists = await client.executeTransaction(haveUser)
+    await client.stopTransaction()
+    if(userExists.length){
+      console.log(userExists)
+      console.log(haveUser)
+      throw new Error('Nope. Account Exists')
+    }
+
     const qry = `insert into users (username, password, email) values("${query['username']}", "${query['password']}", "${query['email']}")`
     await client.startTransaction()
     const result = await client.executeTransaction(qry)
@@ -49,6 +72,7 @@ const userApi = ({ someService }) => {
   }
 
   return {
+    createUser,
     showUser,
     getUser,
     listUsers,
