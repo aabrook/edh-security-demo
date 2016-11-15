@@ -35,19 +35,19 @@ const postsApi = ({ someService }) => {
     ctx.response.body = ReactDOMServer.renderToString(<Post form={!rows.length} {...rows[0]} />)
   }
 
-  const postPost = async ({ request: { query }, ok }) => {
-    const result = savePost(query)
+  const postPost = async ({ request: { body }, ok }) => {
+    const result = savePost(body.data)
     return ok({ result })
   }
 
   const createPost = async (ctx) => {
     const result = await savePost(ctx.request.body)
-    console.log(result)
     ctx.response.redirect(`/post?id=${result.insertId}`)
   }
 
   const savePost = async (query) => {
     const client = openConnection()
+    console.log("Query", query)
     const qry = `insert into posts (user_id, post, title) values("${query['user_id'] || 1}", "${query['post']}", "${query['title']}")`
     console.log(qry)
     await client.startTransaction()
