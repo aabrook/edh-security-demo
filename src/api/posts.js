@@ -30,7 +30,7 @@ const postsApi = ({ someService }) => {
   }
 
   const showPost = async (ctx) => {
-    if(!ctx.session.user){
+    if(!ctx.request.query['id'] && !ctx.session.user){
       ctx.redirect('/auth')
       return
     }

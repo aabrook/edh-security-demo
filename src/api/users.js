@@ -5,6 +5,7 @@ import { makeInvoker } from 'awilix-koa'
 import { debug, getquery } from '../lib/helpers'
 import { openConnection } from '../lib/mysql'
 import List from '../views/components/UserList'
+import PostList from '../views/components/PostList'
 import User from '../views/components/User'
 
 const userApi = ({ someService }) => {
@@ -27,13 +28,15 @@ const userApi = ({ someService }) => {
   const showUser = async (ctx) => {
     const qry = `SELECT * from users where id = "${ctx.request.query['id']}"`
     const rows = await openConnection().query(qry)
+    const posts = await openConnection().query(`select * from posts where user_id = ${rows[0].id}`)
+
     const toDraw = (
       <div>
         <User form={!rows.length} {...rows[0]} />
-        <PostList
+        <PostList children={posts} />
       </div>
     )
-    ctx.response.body = ReactDOMServer.renderToString(<User form={!rows.length} {...rows[0]} />)
+    ctx.response.body = ReactDOMServer.renderToString(toDraw)
   }
 
   const apiPostUser = async (ctx) => {
