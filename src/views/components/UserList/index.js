@@ -1,10 +1,15 @@
 import React from 'react'
 import User from '../User'
+import {List, ListItem} from 'material-ui/List'
 
 export default ({ children }) => (
-  <ul>
+  <List>
     {
-      children && children.map((c, i) => (<li key={i}><User username={c.username} email={c.email} {...c} /></li>))
+      children && children.map((c, i) => (
+        <a href={`/user?id=${c.id}`}>
+          <User username={c.username} email={c.email} {...c} />
+        </a>
+      ))
     }
-  </ul>
+  </List>
 )

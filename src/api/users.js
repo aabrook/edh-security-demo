@@ -20,8 +20,15 @@ const userApi = ({ someService }) => {
     ctx.response.body = ReactDOMServer.renderToString(<App><List children={result} /></App>)
   }
 
+  const apiListUsers = async (ctx) => {
+    const client = openConnection()
+    const rows = await client.query('select * from users')
+    ctx.ok({ rows })
+  }
+
   const getUser = async ({ request: { query }, ok }) => {
     const qry = `SELECT * from users where username = "${query['username']}"`
+    console.log({ qry })
     const rows = await openConnection().query(qry)
     ok({ rows })
   }
@@ -29,7 +36,9 @@ const userApi = ({ someService }) => {
   const showUser = async (ctx) => {
     const qry = `SELECT * from users where id = "${ctx.request.query['id']}"`
     const rows = await openConnection().query(qry)
-    const posts = await openConnection().query(`select * from posts where user_id = ${rows[0].id}`)
+    const posts = rows[0] ?
+      await openConnection().query(`select * from posts where user_id = ${rows[0].id}`) :
+      []
 
     const toDraw = (
       <App>
@@ -43,8 +52,8 @@ const userApi = ({ someService }) => {
   }
 
   const apiPostUser = async (ctx) => {
-    await saveUser(ctx.request.query)
-    return ctx.ok({ result })
+    const rows = await saveUser(ctx.request.query)
+    return ctx.ok({ rows })
   }
 
   const postUser = async (ctx) => {
@@ -82,6 +91,7 @@ const userApi = ({ someService }) => {
     showUser,
     getUser,
     listUsers,
+    apiListUsers,
     postUser
   }
 }
@@ -96,4 +106,5 @@ export default function (router) {
 
     .get('/api/user', api('getUser'))
     .post('/api/user', api('apiPostUser'))
+    .get('/api/users', api('apiListUsers'))
 }

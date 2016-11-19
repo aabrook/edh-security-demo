@@ -1,13 +1,12 @@
 import React from 'react'
+import {List, ListItem} from 'material-ui/List'
 
 export default ({ children }) => (
-  <ul>
+  <List>
     {children && children.map((c, i) =>
-      <li key={i}>
-        <a href={`/post?id=${c.id}`}>
-          {c.title}
-        </a>
-      </li>
-      )}
-  </ul>
+      <a href={`/post?id=${c.id}`}>
+        <ListItem key={i} primaryText={c.title} />
+      </a>
+    )}
+  </List>
 )

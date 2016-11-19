@@ -37,6 +37,7 @@
     "koa-session2": "^1.0.8",
     "koa-views": "next",
     "lodash": "^4.15.0",
+    "material-ui": "^0.16.4",
     "mysql": "^2.12.0",
     "mysql-pro": "^1.0.1",
     "palin": "^2.0.1",

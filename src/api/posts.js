@@ -11,7 +11,9 @@ import App from '../views/components/App'
 
 const postsApi = ({ someService }) => {
   const getPosts = async ({ request: { query }, ok }) => {
-    const qry = `SELECT * from posts where user_id = "${query['user_id']}"`
+    console.log("Retrieving all posts")
+    const id = query['user_id']
+    const qry = `SELECT * from posts ${id ? 'where user_id = "' + id + '"' : ''}`
     const rows = await openConnection().query(qry)
     debug(rows)
     ok({ rows })

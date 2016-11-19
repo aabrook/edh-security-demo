@@ -1,4 +1,6 @@
 import React from 'react'
+import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
 
 const view = ({ title, post }) => (
   <div>
@@ -9,9 +11,20 @@ const view = ({ title, post }) => (
 
 const form = ({ title, post }) => (
   <form method='post'>
-    <p><label for='title'>Title</label><input type='text' name='title' id='title' value={title} /></p>
-    <p><label for='post'>Post</label><textarea name='post' id='post' value={post} /></p>
-    <input type='submit' value='Save' />
+    <div>
+      <TextField value={title} floatingLabelFixed={true} floatingLabelText="Title" id="title" name="title" />
+    </div>
+    <div>
+      <TextField value={post} floatingLabelFixed={true} floatingLabelText="Post" id="post" name="post"
+        multiLine={true}
+        rows={4}
+        rowsMax={4}
+        fullWidth={true}
+      />
+    </div>
+    <div>
+      <RaisedButton primary={true} label="Submit" type="submit" />
+    </div>
   </form>
 )
 

@@ -1,20 +1,27 @@
 import React from 'react'
+import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
+import {List, ListItem} from 'material-ui/List'
 
 const view = ({ id, username, email }) => (
-  <div>
-    <p><a href={`/user?id=${id}`}>{username}</a></p>
-    <p>{email}</p>
-  </div>
+  <ListItem key={id} primaryText={username} secondaryText={email} />
 )
 
-const form = ({ id, username, email, password, action }) => (
-  <form method="post" action={action}>
-    <p><label for='username'>Username</label><input type="text" name="username" id="username" value={username} /></p>
-    <p><label for='password'>Password</label><input type="password" name="password" id="password" value={password} /></p>
-    <p><label for='email'>Email</label><input type="text" name="email" id="email" value={email} /></p>
-    <input type="submit" value="Submit" />
-  </form>
-)
+const form = ({ id, username, email, password, action }) =>
+  (<form method="post" action={action}>
+    <div>
+      <TextField value={username} floatingLabelFixed={true} floatingLabelText="Username" id="username" name="username" />
+    </div>
+    <div>
+      <TextField value={password} floatingLabelFixed={true} floatingLabelText="Password" id="password" name="password" type="password" />
+    </div>
+    <div>
+      <TextField value={email} floatingLabelFixed={true} floatingLabelText="Email" id="email" name="email" />
+    </div>
+    <div>
+      <RaisedButton primary={true} label="Submit" type="submit" />
+    </div>
+  </form>)
 
 export default (props) => (
   props.form ? form(props) : view(props)
