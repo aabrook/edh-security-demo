@@ -1,0 +1,16 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:5.6
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 3306
+    volumes:
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+  edh_demo:
+    build: .
+    ports:
+      - 1338:1338
+    links:
+      - mysql
