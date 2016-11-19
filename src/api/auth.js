@@ -8,7 +8,7 @@ import App from '../views/components/App'
 
 const authApi = ({ someService }) => {
   const showLogin = async (ctx) => {
-    ctx.response.body = ReactDOMServer.renderToString(<App><User form={true} action="/auth" /></App>)
+    ctx.response.body = ReactDOMServer.renderToString(<App ctx={ctx}><User form={true} action="/auth" /></App>)
   }
 
   const login = async (ctx) => {
@@ -35,9 +35,15 @@ const authApi = ({ someService }) => {
     ctx.redirect(`/user?id=${user.id}`)
   }
 
+  const logout = async (ctx) => {
+    ctx.session.user = null
+    ctx.redirect('/auth')
+  }
+
   return {
     showLogin,
-    login
+    login,
+    logout
   }
 }
 
@@ -46,4 +52,5 @@ export default function (router) {
   router
     .get('/auth', api('showLogin'))
     .post('/auth', api('login'))
+    .get('/auth/logout', api('logout'))
 }

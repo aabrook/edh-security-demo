@@ -11,13 +11,13 @@ import App from '../views/components/App'
 
 const userApi = ({ someService }) => {
   const createUser = async (ctx) => {
-    ctx.response.body = ReactDOMServer.renderToString(<App><User form={true} action="/user" /></App>)
+    ctx.response.body = ReactDOMServer.renderToString(<App ctx={ctx}><User form={true} action="/user" /></App>)
   }
 
   const listUsers = async (ctx) => {
     const client = openConnection()
     const result = await client.query('select * from users')
-    ctx.response.body = ReactDOMServer.renderToString(<App><List children={result} /></App>)
+    ctx.response.body = ReactDOMServer.renderToString(<App ctx={ctx}><List children={result} /></App>)
   }
 
   const apiListUsers = async (ctx) => {
@@ -41,7 +41,7 @@ const userApi = ({ someService }) => {
       []
 
     const toDraw = (
-      <App>
+      <App ctx={ctx}>
         <div>
           <User form={!rows.length} {...rows[0]} />
           <PostList children={posts} />

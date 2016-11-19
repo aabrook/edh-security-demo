@@ -12,7 +12,7 @@ const listItem = ({ href, label }) => (
   </li>
 )
 
-export default ({ children, isOpen }) => (
+export default ({ children, ctx }) => (
   <div>
     <style>
     </style>
@@ -24,7 +24,7 @@ export default ({ children, isOpen }) => (
             <ul style={{listStyleType: "none", width: "100%", height: "3em"}}>
               {listItem({ href: '/users', label: 'Users' })}
               {listItem({ href: '/user/new', label: 'Create User' })}
-              {listItem({ href: '/auth', label: 'Login' })}
+              {ctx.session.user ? listItem({ href: '/auth/logout', label: 'Logout' }) : listItem({ href: '/auth', label: 'Login' })}
               {listItem({ href: '/post', label: 'Create Post' })}
             </ul>
           </Paper>

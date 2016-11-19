@@ -23,7 +23,7 @@ const postsApi = ({ someService }) => {
     const qry = `SELECT * from posts where user_id = "${ctx.request.query['user_id']}"`
     const result = await openConnection().query(qry)
 
-    ctx.response.body = ReactDOMServer.renderToString(<App><List children={result} /></App>)
+    ctx.response.body = ReactDOMServer.renderToString(<App ctx={ctx}><List children={result} /></App>)
   }
 
   const getPost = async ({ request: { query }, ok }) => {
@@ -40,7 +40,7 @@ const postsApi = ({ someService }) => {
 
     const qry = `SELECT * from posts where id = "${ctx.request.query['id']}"`
     const rows = await openConnection().query(qry)
-    ctx.response.body = ReactDOMServer.renderToString(<App><Post form={!rows.length} {...rows[0]} /></App>)
+    ctx.response.body = ReactDOMServer.renderToString(<App ctx={ctx}><Post form={!rows.length} {...rows[0]} /></App>)
   }
 
   const postPost = async ({ request: { body }, ok }) => {
